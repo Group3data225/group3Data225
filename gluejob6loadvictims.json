@@ -1,0 +1,44 @@
+{
+  "jobConfig": {
+    "name": "gluejob6loadvictims",
+    "description": "",
+    "role": "arn:aws:iam::085881942399:role/gluejobforsnowflake",
+    "command": "glueetl",
+    "version": "2.0",
+    "workerType": "G.1X",
+    "numberOfWorkers": 10,
+    "maxCapacity": 10,
+    "maxRetries": 0,
+    "timeout": 2880,
+    "maxConcurrentRuns": 1,
+    "security": "none",
+    "scriptName": "gluejob6loadvictims.py",
+    "scriptLocation": "s3://aws-glue-assets-085881942399-us-east-1/scripts/",
+    "language": "python-3",
+    "jobParameters": [
+      {
+        "key": "--additional-python-modules",
+        "value": "cryptography==2.9.2,snowflake-connector-python==2.3.7",
+        "existing": false
+      }
+    ],
+    "tags": [],
+    "jobMode": "DEVELOPER_MODE",
+    "useGlueProvidedDataLakeLibs": false,
+    "developerMode": true,
+    "connectionsList": [],
+    "temporaryDirectory": "s3://aws-glue-assets-085881942399-us-east-1/temporary/",
+    "logging": true,
+    "glueHiveMetastore": true,
+    "etlAutoTuning": true,
+    "metrics": true,
+    "spark": true,
+    "dependentPath": "s3://data225group3/snowflake-jdbc-3.13.25.jar,s3://data225group3/spark-snowflake_2.13-2.11.0-spark_3.3.jar",
+    "bookmark": "job-bookmark-enable",
+    "sparkPath": "s3://aws-glue-assets-085881942399-us-east-1/sparkHistoryLogs/",
+    "flexExecution": false,
+    "minFlexWorkers": null
+  },
+  "hasBeenSaved": false,
+  "script": "from snowflake.connector import connect\r\nsql = '''copy into ACCIDENTS_SF.PUBLIC.VICTIMS from @ACCIDENTS_SF.PUBLIC.stage1/Accidents/victims.csv\r\nFILE_FORMAT=(FORMAT_NAME=my_csv_format)\r\non_error = 'skip_file';'''\r\nconn = connect(\r\n    user = 'Pavan1625',\r\n    password = 'Pavan@4498',\r\n    account = 'rlb56414.us-east-1',\r\n    warehouse ='DATA225_GRP3',\r\n    database ='ACCIDENTS_SF',\r\n    schema = 'PUBLIC')\r\n\r\ncursor = conn.cursor()\r\ncursor.execute(sql)\r\ncursor.close()"
+}

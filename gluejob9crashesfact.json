@@ -1,0 +1,44 @@
+{
+  "jobConfig": {
+    "name": "gluejob9crashesfact",
+    "description": "",
+    "role": "arn:aws:iam::085881942399:role/gluejobforsnowflake",
+    "command": "glueetl",
+    "version": "3.0",
+    "workerType": "G.1X",
+    "numberOfWorkers": 10,
+    "maxCapacity": 10,
+    "maxRetries": 0,
+    "timeout": 2880,
+    "maxConcurrentRuns": 1,
+    "security": "none",
+    "scriptName": "gluejob9crashesfact.py",
+    "scriptLocation": "s3://aws-glue-assets-085881942399-us-east-1/scripts/",
+    "language": "python-3",
+    "jobParameters": [
+      {
+        "key": "--additional-python-modules",
+        "value": "cryptography==2.9.2,snowflake-connector-python==2.3.7",
+        "existing": false
+      }
+    ],
+    "tags": [],
+    "jobMode": "DEVELOPER_MODE",
+    "useGlueProvidedDataLakeLibs": false,
+    "developerMode": true,
+    "connectionsList": [],
+    "temporaryDirectory": "s3://aws-glue-assets-085881942399-us-east-1/temporary/",
+    "logging": true,
+    "glueHiveMetastore": true,
+    "etlAutoTuning": true,
+    "metrics": true,
+    "spark": true,
+    "dependentPath": "s3://data225group3/snowflake-jdbc-3.13.25.jar,s3://data225group3/spark-snowflake_2.13-2.11.0-spark_3.3.jar",
+    "bookmark": "job-bookmark-enable",
+    "sparkPath": "s3://aws-glue-assets-085881942399-us-east-1/sparkHistoryLogs/",
+    "flexExecution": false,
+    "minFlexWorkers": null
+  },
+  "hasBeenSaved": false,
+  "script": "from snowflake.connector import connect\r\nsql = '''CREATE TABLE CRASHES AS (select c.crash_unique_id,p.parties_unique_id,v.victim_unique_id,\r\nc.DPH_COL_GRP,c.officer_id,c.tb_latitude,c.tb_longitude,c.collision_date,\r\nc.collision_time,c.number_killed,c.number_injured\r\nfrom parties p,crash c,victims v\r\nwhere p.case_id_pkey = c.case_id_pkey\r\nand v.case_id_pkey = c.case_id_pkey);'''\r\nconn = connect(\r\n    user = 'Pavan1625',\r\n    password = 'Pavan@4498',\r\n    account = 'rlb56414.us-east-1',\r\n    warehouse ='DATA225_GRP3',\r\n    database ='ACCIDENTS_SF',\r\n    schema = 'PUBLIC')\r\n\r\ncursor = conn.cursor()\r\ncursor.execute(sql)\r\ncursor.close()"
+}

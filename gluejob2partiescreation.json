@@ -1,0 +1,44 @@
+{
+  "jobConfig": {
+    "name": "gluejob2partiescreation",
+    "description": "",
+    "role": "arn:aws:iam::085881942399:role/gluejobforsnowflake",
+    "command": "glueetl",
+    "version": "2.0",
+    "workerType": "G.1X",
+    "numberOfWorkers": 10,
+    "maxCapacity": 10,
+    "maxRetries": 0,
+    "timeout": 2880,
+    "maxConcurrentRuns": 1,
+    "security": "none",
+    "scriptName": "gluejob2partiescreation.py",
+    "scriptLocation": "s3://aws-glue-assets-085881942399-us-east-1/scripts/",
+    "language": "python-3",
+    "jobParameters": [
+      {
+        "key": "--additional-python-modules",
+        "value": "cryptography==2.9.2,snowflake-connector-python==2.3.7",
+        "existing": false
+      }
+    ],
+    "tags": [],
+    "jobMode": "DEVELOPER_MODE",
+    "useGlueProvidedDataLakeLibs": false,
+    "developerMode": true,
+    "connectionsList": [],
+    "temporaryDirectory": "s3://aws-glue-assets-085881942399-us-east-1/temporary/",
+    "logging": true,
+    "glueHiveMetastore": true,
+    "etlAutoTuning": true,
+    "metrics": true,
+    "spark": true,
+    "dependentPath": "s3://data225group3/snowflake-jdbc-3.13.25.jar,s3://data225group3/spark-snowflake_2.13-2.11.0-spark_3.3.jar",
+    "bookmark": "job-bookmark-enable",
+    "sparkPath": "s3://aws-glue-assets-085881942399-us-east-1/sparkHistoryLogs/",
+    "flexExecution": false,
+    "minFlexWorkers": null
+  },
+  "hasBeenSaved": false,
+  "script": "from snowflake.connector import connect\r\nsql = '''CREATE OR REPLACE TABLE PARTIES\r\n(parties_unique_id\tINT NOT NULL\t,\r\ncase_id_pkey\tVARCHAR(250)\t,\r\nofficer_id\tVARCHAR(250)\t,\r\nreporting_district\tVARCHAR(250)\t,\r\nlighting\tVARCHAR(250)\t,\r\ndph_col_grp\tVARCHAR(250)\t,\r\ndph_col_grp_description\tVARCHAR(250)\t,\r\nparty_number_ckey\tINT\t,\r\nparty_type\tVARCHAR(250)\t,\r\nat_fault\tVARCHAR(250)\t,\r\nparty_sex\tVARCHAR(250)\t,\r\nparty_age\tFLOAT\t,\r\nparty_sobriety\tVARCHAR(250)\t,\r\nparty_drug_physical\tVARCHAR(250)\t,\r\ndir_of_travel\tVARCHAR(250)\t,\r\nparty_safety_equip_1\tVARCHAR(250)\t,\r\nparty_safety_equip_2\tVARCHAR(250)\t,\r\nfinan_respons\tVARCHAR(250)\t,\r\nsp_info_1\tVARCHAR(250)\t,\r\nsp_info_2\tVARCHAR(250)\t,\r\nsp_info_3\tVARCHAR(250)\t,\r\noaf_viol_cat\tVARCHAR(250)\t,\r\noaf_viol_section\tVARCHAR(250)\t,\r\noaf_violation_code\tVARCHAR(250)\t,\r\noaf_violation_suffix\tVARCHAR(250)\t,\r\noaf_1\tVARCHAR(250)\t,\r\noaf_2\tVARCHAR(250)\t,\r\nparty_number_killed\tINT\t,\r\nparty_number_injured\tINT\t,\r\nmove_pre_acc\tVARCHAR(250)\t,\r\nvehicle_year\tVARCHAR(250)\t,\r\nvehicle_make\tVARCHAR(250)\t,\r\nstwd_vehicle_type\tVARCHAR(250)\t,\r\nrace\tVARCHAR(250)\t,\r\ninattention\tVARCHAR(250)\t,\r\nspecial_info_f\tVARCHAR(250)\t,\r\nspecial_info_g\tVARCHAR(250)\t,\r\nstreet_of_travel\tVARCHAR(250)\t,\r\nvehicle_autonomous\tVARCHAR(250),\r\nPRIMARY KEY (parties_unique_id));'''\r\n\r\nconn = connect(\r\n    user = 'Pavan1625',\r\n    password = 'Pavan@4498',\r\n    account = 'rlb56414.us-east-1',\r\n    warehouse ='DATA225_GRP3',\r\n    database ='ACCIDENTS_SF',\r\n    schema = 'PUBLIC')\r\n\r\ncursor = conn.cursor()\r\ncursor.execute(sql)\r\ncursor.close()\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n  \r\n    \r\n    "
+}
